@@ -156,6 +156,8 @@ artifactory:
     #maxOpenConnections: 100
     ## Max connection to keep idle
     #maxIdleConnections: 10
+    ## Min connection to keep idle
+    #minIdleConnections: 1
     ## Connection pool manager. Either tomcat-jdbc or hikari
     #poolType: "tomcat-jdbc"
 
@@ -246,6 +248,8 @@ access:
     #maxOpenConnections: 100
     ## Max connection to keep idle
     #maxIdleConnections: 10
+    ## Min connection to keep idle
+    #minIdleConnections: 1
     ## Connection pool manager. Either tomcat-jdbc or hikari
     #poolType: "tomcat-jdbc"
 
@@ -700,3 +704,6 @@ event:
     #retryCount: 5
     ## Time in second event service will wait between 2 retries
     #retryWait: 10s
+    ## when true private networks (loopback, RFC1918, RFC3927, and IPV6 unique local addresses) will not be allowed as
+    ## webhook targets
+    #urlStrictPolicy: true
