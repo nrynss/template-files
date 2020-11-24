@@ -213,7 +213,7 @@ artifactory:
   ## Add any custom environment variables to be passed to this service
   ## Environment variables starting with JF_ are not allowed, will be ignored with a warning if it is added
   env:
-    #EXAMPLE_VAR: example-value
+    #EXAMPLE_VAR: "example-value"
     #LD_LIBRARY_PATH: /usr/lib64
 
   ## Metrics configuration
