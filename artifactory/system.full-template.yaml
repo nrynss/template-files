@@ -344,6 +344,9 @@ metadata:
         ## If compress is true, gzip compression will be applied while rotating log files
         #compress: true
 
+        ## If compress is true, the number of archived files to be left uncompressed
+        #keepLastDecompressed: 1
+
     request:
       ## If requestConsole value is true, request logs will also be written to standard out
       #console: false
@@ -361,6 +364,9 @@ metadata:
 
         ## If compress is true, gzip compression will be applied while rotating log files
         #compress: true
+
+        ## If compress is true, the number of archived files to be left uncompressed
+        #keepLastDecompressed: 1
 
   ## Profiling Related Settings
   profiling:
@@ -476,6 +482,7 @@ router:
       ## Log rotation settings
       rotation:
         #compress: true
+        #keepLastDecompressed: 1
         #maxSizeMb: 25
         #maxAgeDays: 0
         #maxFiles: 10
@@ -498,6 +505,7 @@ router:
       ## Log rotation settings
       rotation:
         #compress: true
+        #keepLastDecompressed: 1
         #maxSizeMb: 25
         #maxAgeDays: 0
         #maxFiles: 10
@@ -512,6 +520,7 @@ router:
       ## Log rotation settings
       rotation:
         #compress: true
+        #keepLastDecompressed: 1
         #maxSizeMb: 100
         #maxAgeDays: 0
         #maxFiles: 10
@@ -539,6 +548,8 @@ replicator:
       ## Set rotationIntervalSecs to a positive number to enable rotation by time, as well as by file size (maxFileSizeMb)
       #rotationIntervalSecs: 0
       #compress: true
+      ## If compress is true, the number of archived files to be left uncompressed
+      #keepLastDecompressed: 1
       ## Traffic is aggregated and written to the log every intervalSecs seconds
       #intervalSecs: 3
       #eventsChannelSize: 1000
@@ -585,6 +596,13 @@ event:
     request:
       ## Http timeout in seconds
       #timeout: 5
+
+  ## Access client settings
+  accessClient:
+    ## Ping access timeout duration
+    #pingTimeout: 2m
+    ## Join access timeout duration
+    #joinTimeout: 3m
 
   ## Support Bundle settings
   supportBundle:
@@ -643,6 +661,7 @@ event:
       ## Log rotation setting
       rotation:
         #compress: true
+        #keepLastDecompressed: 1
         #maxSizeMb: 25
         #maxAgeDays: 365
         #maxFiles: 10
@@ -656,6 +675,7 @@ event:
       ## Log rotation setting
       rotation:
         #compress: true
+        #keepLastDecompressed: 1
         #maxSizeMb: 25
         #maxAgeDays: 365
         #maxFiles: 10
@@ -668,6 +688,7 @@ event:
       ## Log rotation setting
       rotation:
         #compress: true
+        #keepLastDecompressed: 1
         #maxSizeMb: 25
         #maxAgeDays: 365
         #maxFiles: 10
