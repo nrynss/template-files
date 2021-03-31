@@ -55,25 +55,34 @@ shared:
   ## Node Settings
   node:
     ## A unique id to identify this node.
-    ## Default: auto generated at startup.
+    ## Default auto generated at startup.
     #id: "art1"
 
-    ## Default: auto resolved by startup script
+    ## Default auto resolved by startup script
     #ip:
 
-    ## Default: auto resolved by startup script
+    ## Default auto resolved by startup script
     #name: ""
-
-    ## Sets this node as primary in HA installation
-    #primary: true
 
     ## Sets this node as part of HA installation
     #haEnabled: true
 
+    ## One of
+    ## 'any' - allow running any kind of background job on this node such as the Artifactory Garbage Collector,
+    ## Scheduled Replication, Backup, etc.
+    ## 'none' - no background jobs are allowed to run on this node (except for a select group of system jobs)
+    ## This attribute and the 'primary' attribute are mutually exclusive. When both are set, only the Primary node can
+    ## execute jobs in the cluster.
+    ## Default any
+    #taskAffinity: any
+
+    ## Deprecated: sets this node as primary in HA installation. This attribute and taskAffinity are mutually exclusive
+    #primary: true
+
   ## Database Configuration
   database:
-    ## One of: mysql, oracle, mssql, postgresql, mariadb
-    #Default: Embedded derby
+    ## One of mysql, oracle, mssql, postgresql, mariadb
+    ## Default Embedded derby
 
     ## Example for postgresql
     #type: postgresql
@@ -82,33 +91,37 @@ shared:
     #username: artifactory
     #password: password
 
-    ## Example for mysql
-    #type: mysql
-    #driver: com.mysql.jdbc.Driver
-    #url: "jdbc:mysql://<your db url, for example: localhost:3306>/artdb?characterEncoding=UTF-8&elideSetAutoCommits=true&useSSL=false"
-    #username: artifactory
-    #password: password
+    ## Example for mysql 
+    ## uncomment below to use database type
+    ##type: mysql
+    ##driver: com.mysql.jdbc.Driver
+    ##url: "jdbc:mysql://<your db url, for example: localhost:3306>/artdb?characterEncoding=UTF-8&elideSetAutoCommits=true&useSSL=false"
+    ##username: artifactory
+    ##password: password
 
     ## Example for oracle
-    #type: oracle
-    #driver: oracle.jdbc.OracleDriver
-    #url: "jdbc:oracle:thin:@<your db server url, for example: localhost:1521>:ORCL"
-    #username: artifactory
-    #password: password
+    ## uncomment below to use database type
+    ##type: oracle
+    ##driver: oracle.jdbc.OracleDriver
+    ##url: "jdbc:oracle:thin:@<your db server url, for example: localhost:1521>:ORCL"
+    ##username: artifactory
+    ##password: password
 
     ## Example for mssql
-    #type: mssql
-    #driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    #url: "jdbc:sqlserver://<your db server url, for example: localhost:1433>;databaseName=artifactory;sendStringParametersAsUnicode=false;applicationName=Artifactory Binary Repository"
-    #username: artifactory
-    #password: password
+    ## uncomment below to use database type
+    ##type: mssql
+    ##driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    ##url: "jdbc:sqlserver://<your db server url, for example: localhost:1433>;databaseName=artifactory;sendStringParametersAsUnicode=false;applicationName=Artifactory Binary Repository"
+    ##username: artifactory
+    ##password: password
 
     ## Example for mariadb
-    #type: mariadb
-    #driver: org.mariadb.jdbc.Driver
-    #url: "jdbc:mariadb://<your db server url, for example: localhost:3306>/artdb?characterEncoding=UTF-8&elideSetAutoCommits=true&useSSL=false"
-    #username: artifactory
-    #password: password
+    ## uncomment below to use database type
+    ##type: mariadb
+    ##driver: org.mariadb.jdbc.Driver
+    ##url: "jdbc:mariadb://<your db server url, for example: localhost:3306>/artdb?characterEncoding=UTF-8&elideSetAutoCommits=true&useSSL=false"
+    ##username: artifactory
+    ##password: password
 
   ## Script Configuration
   ## Parameters for the application startup scripts
@@ -303,6 +316,9 @@ frontend:
     #EXAMPLE_VAR: example-value
     #LD_LIBRARY_PATH: /usr/lib64
 
+  featureToggler:
+    ## Enable Projects functionality
+    commonProjects: true
 
 ## METADATA TEMPLATE
 metadata:
@@ -313,6 +329,9 @@ metadata:
   database:
     ## Max connections to the database the main connection pool can consume
     #maxOpenConnections: 100
+
+    ## Disable applicative prepared statement cache
+    #disablePreparedStatementCache: false
 
   ## Logging Settings
   logging:
