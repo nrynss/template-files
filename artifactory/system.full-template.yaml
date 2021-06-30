@@ -187,9 +187,10 @@ artifactory:
     ## Artifactory connector settings
     connector:
       #maxThreads: 200
+      #sendReasonPhrase: false
       ## An extra configuration to add to the Artifactory connector
       #extraConfig: ""
-
+ 
     maintenanceConnector:
       ## This port is dedicated for the maintenance requests
       ## Currently, it is going to be used by Router to issue a health check requests
@@ -271,6 +272,7 @@ access:
     ## Access connector settings
     connector:
       #maxThreads: 50
+      #sendReasonPhrase: false
 
       ## Extra configuration to add to the Access connector
       #extraConfig: ""
@@ -336,7 +338,7 @@ metadata:
   ## Logging Settings
   logging:
     application:
-      ## The log level: error, warn, info, debug
+      ## The log level: error, warn, info, debug, trace
       #level: info
 
       ## If console value is true, application logs will also be written to standard out
@@ -613,8 +615,8 @@ event:
 
     ## HTTP request settings
     request:
-      ## Http timeout in seconds
-      #timeout: 5
+      ## Http timeout as a duration
+      #timeout: 5s
 
   ## Access client settings
   accessClient:
