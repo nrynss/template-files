@@ -35,6 +35,9 @@ shared:
     ## Maximum time to wait for key files (master.key and join.key)
     #bootstrapKeysReadTimeoutSecs: 120
 
+    ## Expose application headers (e.g server, node id) for unauthenticated and anonymous calls
+    exposeApplicationHeaders: true
+
   ## Logging Configuration
   logging:
     consoleLog:
@@ -334,6 +337,9 @@ metadata:
 
     ## Disable applicative prepared statement cache
     #disablePreparedStatementCache: false
+    
+    ## Timeout for queries in seconds (default: 1800 = 30 min)
+    #queryTimeoutSecs: 1800
 
   ## Logging Settings
   logging:
@@ -454,6 +460,9 @@ router:
   topology:
     ## Local topology settings
     local:
+      ## On replicator enabled - requiredServiceTypes will be "jfrt,jfac,jfmd,jffe,jfevt,jfxfer,jfob"
+      #requiredServiceTypes: "jfrt,jfac,jfmd,jffe,jfevt,jfob"
+
       ## Settings for checking the health of the local services
       healthCheck:
         ## Duration between health checks
@@ -552,6 +561,10 @@ router:
     #EXAMPLE_VAR: example-value
     #LD_LIBRARY_PATH: /usr/lib64
 
+  ## Retry configuration
+  retry:
+    ## Enable retry sending request in case of network error
+    #enabled: true
 
 ## REPLICATOR TEMPLATE
 replicator:
