@@ -160,6 +160,26 @@ shared:
         #url: "Elasticsearch url where JFrog Mission Control is installed For example, http://<ip_address>:8082"
         #username: ""
         #password: ""
+  healthCheck:
+    ## Minimal value allowed is 3. Less than that will be replaced with 3
+    #intervalSecs: 15
+
+    probes:
+      liveness:
+        ## Fail liveness if readiness has been failing for more than what
+        ## is configured in failureDurationSecs
+        ## The readiness probe should also be called to use this
+        failOnLongFailingReadiness:
+          #enabled: true
+          ## Duration of a failing readiness that will fail the liveness
+          #failureDurationSecs: 60
+
+  ## Cold storage configuration
+  jfrogColdStorage:
+    ## Set it as true to configure the instance to run in Cold instance mode.
+    # coldInstanceEnabled: true
+    ## Enter the URL for the Cold instance that the Live instance will connect with
+    # coldInstanceUrl: "http://<cold_instance_ip_address>:port/artifactory"
 
 ## ARTIFACTORY TEMPLATE
 artifactory:
@@ -239,7 +259,7 @@ artifactory:
     ## artifactory-metrics_events.log files
     #enabled: true
     ## Interval to collect metrics
-    #interval: 60
+    #intervalSecs: 60
     ## Excluded providers from metrics
     #exclude:
 
@@ -285,7 +305,15 @@ access:
   env:
     #EXAMPLE_VAR: example-value
     #LD_LIBRARY_PATH: /usr/lib64
-  
+  metrics:
+    ## If enabled is true, metrics will be collected and written to access-metrics or
+    ## access-metrics_events.log files
+    #enabled: true
+    ## Interval to collect metrics
+    #intervalSecs: 60
+    ## Excluded providers from metrics
+    #exclude:
+
   ## Skip creating default admin user on startup
   #startUpSkipDefaultAdmin: false
 
@@ -408,6 +436,27 @@ metadata:
   tokenCache:
     #timeout: 115s
 
+## Mission control template
+mc:
+  #port: 8080
+  #enabled: false
+
+  ## Tomcat connector customization on the MC
+  tomcat:
+    ## Connector settings
+    connector:
+      #maxThreads: 50
+
+      ## Extra configuration to add to the connector
+      #extraConfig: ""
+
+  database:
+    ## Max connections to the database the main connection pool can consume
+    #maxOpenConnections: 10
+
+  idgenerator:
+    ## Max connections to the database the id generator connection pool can consume
+    #maxOpenConnections: 2
 
 ## ROUTER TEMPLATE
 router:
@@ -460,6 +509,9 @@ router:
   topology:
     ## Local topology settings
     local:
+      ## On replicator enabled - requiredServiceTypes will be "jfrt,jfac,jfmd,jffe,jfevt,jfxfer,jfob"
+      #requiredServiceTypes: "jfrt,jfac,jfmd,jffe,jfevt,jfob"
+
       ## Settings for checking the health of the local services
       healthCheck:
         ## Duration between health checks
@@ -558,6 +610,10 @@ router:
     #EXAMPLE_VAR: example-value
     #LD_LIBRARY_PATH: /usr/lib64
 
+  ## Retry configuration
+  retry:
+    ## Enable retry sending request in case of network error
+    #enabled: true
 
 ## REPLICATOR TEMPLATE
 replicator:
