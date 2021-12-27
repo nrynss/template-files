@@ -1,0 +1,297 @@
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#download-and-installation">Download and Installation</a></li>
+<li><a href="#building-the-executable">Building the Executable</a></li>
+<li><a href="#tests">Tests</a></li>
+<li><a href="#code-contributions">Code Contributions</a></li>
+<li><a href="#using-jfrog-cli">Using JFrog CLI</a></li>
+<li><a href="#jfrog-cli-plugins">JFrog CLI Plugins</a></li>
+<li><a href="#release-notes">Release Notes</a></li>
+</ul>
+<h1 id="overview">Overview</h1>
+<p>JFrog CLI is a compact and smart client that provides a simple interface that automates access to <em>Artifactory</em> and <em>Mission Control</em> through their respective REST APIs.
+By using the JFrog CLI, you can greatly simplify your automation scripts making them more readable and easier to maintain.
+Several features of the JFrog CLI makes your scripts more efficient and reliable:</p>
+<ul>
+<li>Multi-threaded upload and download of artifacts make builds run faster</li>
+<li>Checksum optimization reduces redundant file transfers</li>
+<li>Wildcards and regular expressions give you an easy way to collect all the artifacts you wish to upload or download.</li>
+<li>&quot;Dry run&quot; gives you a preview of file transfer operations before you actually run them</li>
+</ul>
+<h1 id="download-and-installation">Download and Installation</h1>
+<p>You can either install JFrog CLI using one of the supported installers or download its executable directly. Visit the <a href="https://jfrog.com/getcli/">Install JFrog CLI Page</a> for details.</p>
+<h1 id="building-the-executable">Building the Executable</h1>
+<p>JFrog CLI is written in the <a href="https://golang.org/">Go programming language</a>, so to build the CLI yourself, you first need to have Go installed and configured on your machine.</p>
+<h2 id="install-go">Install Go</h2>
+<p>To download and install <code>Go</code>, please refer to the <a href="https://golang.org/doc/install">Go documentation</a>.
+Please download <code>Go 1.14.x</code> or above.</p>
+<h2 id="download-and-build-the-cli">Download and Build the CLI</h2>
+<p>Navigate to a directory where you want to create the jfrog-cli project, <strong>outside</strong> the <code>$GOPATH</code> tree.</p>
+<p>If the <code>GOPATH</code> variable is unset, it&#39;s default value is the go folder under the user home.</p>
+<p>Verify that the <code>GO111MODULE</code> variable is either unset, or explicitly set to <code>auto</code>.</p>
+<p>Clone the jfrog-cli project by executing the following command:</p>
+<pre><code>git <span class="hljs-keyword">clone</span> <span class="hljs-title">https</span>://github.com/jfrog/jfrog-cli
+</code></pre><p>Build the project by navigating to the jfrog folder and executing the following commands.
+On Unix based systems run:</p>
+<pre><code><span class="hljs-keyword">cd</span> jfrog-<span class="hljs-keyword">cli</span>
+build/build.<span class="hljs-keyword">sh</span>
+</code></pre><p>On Windows run:</p>
+<pre><code><span class="hljs-keyword">cd</span> jfrog-<span class="hljs-keyword">cli</span>
+build\build.bat
+</code></pre><p>Once completed, you will find the JFrog CLI executable at your current directory.</p>
+<h1 id="tests">Tests</h1>
+<h3 id="usage">Usage</h3>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> [<span class="hljs-keyword">test</span>-types] [flags]
+</code></pre><p>The flags are:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-jfrog.url</code></td>
+<td>[Default: <a href="http://localhost:8081">http://localhost:8081</a>] JFrog platform URL.</td>
+</tr>
+<tr>
+<td><code>-jfrog.user</code></td>
+<td>[Default: admin] JFrog platform username.</td>
+</tr>
+<tr>
+<td><code>-jfrog.password</code></td>
+<td>[Default: password] JFrog platform password.</td>
+</tr>
+<tr>
+<td><code>-jfrog.adminToken</code></td>
+<td>JFrog platform admin token.</td>
+</tr>
+<tr>
+<td><code>-ci.runId</code></td>
+<td>[Optional] A unique identifier used as a suffix to create repositories and builds in the tests.</td>
+</tr>
+</tbody>
+</table>
+<p>The types are:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-test.artifactory</code></td>
+<td>Artifactory tests</td>
+</tr>
+<tr>
+<td><code>-test.npm</code></td>
+<td>Npm tests</td>
+</tr>
+<tr>
+<td><code>-test.maven</code></td>
+<td>Maven tests</td>
+</tr>
+<tr>
+<td><code>-test.gradle</code></td>
+<td>Gradle tests</td>
+</tr>
+<tr>
+<td><code>-test.docker</code></td>
+<td>Docker tests</td>
+</tr>
+<tr>
+<td><code>-test.go</code></td>
+<td>Go tests</td>
+</tr>
+<tr>
+<td><code>-test.pip</code></td>
+<td>Pip tests</td>
+</tr>
+<tr>
+<td><code>-test.nuget</code></td>
+<td>Nuget tests</td>
+</tr>
+<tr>
+<td><code>-test.plugins</code></td>
+<td>Plugins tests</td>
+</tr>
+<tr>
+<td><code>-test.distribution</code></td>
+<td>Distribution tests</td>
+</tr>
+<tr>
+<td><code>-test.xray</code></td>
+<td>Xray tests</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Running the tests will create builds and repositories with timestamps,
+for example: <code>cli-rt1-1592990748</code> and <code>cli-rt2-1592990748</code>.<br/>
+Once the tests are completed, the content of these repositories will be deleted.</li>
+</ul>
+<h4 id="artifactory-tests">Artifactory tests</h4>
+<p>In addition to <a href="#Usage">general optional flags</a> you can use the following optional artifactory flags.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-jfrog.sshKeyPath</code></td>
+<td>[Optional] Ssh key file path. Should be used only if the Artifactory URL format is ssh://[domain]:port.</td>
+</tr>
+<tr>
+<td><code>-jfrog.sshPassphrase</code></td>
+<td>[Optional] Ssh key passphrase.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="examples">Examples</h5>
+<p>To run artifactory tests execute the following command.</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.artifactory [flags]
+</code></pre><h4 id="npm-tests">Npm tests</h4>
+<h5 id="requirements">Requirements</h5>
+<ul>
+<li>The <em>npm</em> executables should be included as part of the <em>PATH</em> environment variable.</li>
+<li>The tests are compatible with npm 7 and higher.</li>
+</ul>
+<h5 id="limitation">Limitation</h5>
+<ul>
+<li>Currently, npm integration support only http(s) connections to Artifactory using username and password.</li>
+</ul>
+<h5 id="examples">Examples</h5>
+<p>To run npm tests execute the following command.</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.npm [flags]
+</code></pre><h4 id="maven-tests">Maven tests</h4>
+<h5 id="requirements">Requirements</h5>
+<ul>
+<li>The <em>java</em> executable should be included as part of the <em>PATH</em> environment variable. Alternatively, set the _JAVA<em>HOME</em> environment variable.</li>
+</ul>
+<h5 id="limitation">Limitation</h5>
+<ul>
+<li>Currently, maven integration support only http(s) connections to Artifactory using username and password.</li>
+</ul>
+<h5 id="examples">Examples</h5>
+<p>To run maven tests execute the following command.</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.maven [flags]
+</code></pre><h4 id="gradle-tests">Gradle tests</h4>
+<h5 id="requirements">Requirements</h5>
+<ul>
+<li>The <em>gradle</em> executables should be included as part of the <em>PATH</em> environment variable.</li>
+<li>The <em>java</em> executable should be included as part of the <em>PATH</em> environment variable. Alternatively, set the _JAVA<em>HOME</em> environment variable.</li>
+</ul>
+<h5 id="limitation">Limitation</h5>
+<ul>
+<li>Currently, gradle integration support only http(s) connections to Artifactory using username and password.</li>
+</ul>
+<h5 id="examples">Examples</h5>
+<p>To run gradle tests execute the following command.</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.gradle [flags]
+</code></pre><h4 id="docker-tests">Docker tests</h4>
+<p>In addition to <a href="#Usage">general optional flags</a> you <em>must</em> use the following docker flags.</p>
+<h5 id="requirements">Requirements</h5>
+<ul>
+<li>On Linux machines, <a href="https://podman.io/">Podman</a> tests will be running, so make sure it&#39;s available in the local path.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-rt.dockerRepoDomain</code></td>
+<td>Artifactory Docker registry domain.</td>
+</tr>
+<tr>
+<td><code>-rt.dockerVirtualRepo</code></td>
+<td>Artifactory Docker virtual repository name.</td>
+</tr>
+<tr>
+<td><code>-rt.dockerRemoteRepo</code></td>
+<td>Artifactory Docker remote repository name.</td>
+</tr>
+<tr>
+<td><code>-rt.DockerLocalRepo</code></td>
+<td>Artifactory Docker local repository name.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="examples">Examples</h5>
+<p>To run docker tests execute the following command (fill out the missing parameters as described below).</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.docker -rt.dockerRepoDomain=DOCKER_DOMAIN -rt.DockerLocalRepo=DOCKER_LOCAL_REPO [flags]
+</code></pre><h4 id="go-commands-tests">Go commands tests</h4>
+<h5 id="requirement">Requirement</h5>
+<ul>
+<li>The tests are compatible with Artifactory 6.10 and higher.</li>
+</ul>
+<h5 id="examples">Examples</h5>
+<p>To run go tests run the following command.</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.go [flags]
+</code></pre><h4 id="nuget-tests">NuGet tests</h4>
+<h5 id="requirement">Requirement</h5>
+<ul>
+<li>Add NuGet executable to the system search path (PATH environment variable).</li>
+<li>Run the following command.</li>
+</ul>
+<h5 id="examples">Examples</h5>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.nuget [flags]
+</code></pre><h4 id="pip-tests">Pip tests</h4>
+<h5 id="requirement">Requirement</h5>
+<ul>
+<li>Add Python and pip executables to the system search path (PATH environment variable).</li>
+<li>Pip tests must run inside a clean pip-environment. You can either activate a virtual-environment and execute the tests from within, or provide the path to your virtual-environment using the -rt.pipVirtualEnv flag.</li>
+<li>Run the following command:</li>
+</ul>
+<p>In addition to <a href="#Usage">general optional flags</a> you can use the following optional pip flags</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-rt.pipVirtualEnv</code></td>
+<td>[Optional] Path to the directory of a clean pip virtual-environment. Make sure to provide the binaries directory (in unix: <em>/bin</em>, in windows: <em>\Scripts</em>).</td>
+</tr>
+</tbody>
+</table>
+<h5 id="examples">Examples</h5>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.pip [flags]
+</code></pre><h4 id="plugins-tests">Plugins tests</h4>
+<p>To run Plugins tests execute the following command:</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.plugins
+</code></pre><h3 id="distribution-tests">Distribution tests</h3>
+<p>To run Distribution tests execute the following command:</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.distribution [flags]
+</code></pre><h3 id="xray-tests">Xray tests</h3>
+<p>To run Xray tests execute the following command:</p>
+<pre><code>go <span class="hljs-keyword">test</span> -v github.com/jfrog/jfrog-<span class="hljs-keyword">cli</span> -<span class="hljs-keyword">test</span>.xray [flags]
+</code></pre><h1 id="code-contributions">Code Contributions</h1>
+<p>We welcome code contributions through pull requests from the community.</p>
+<h2 id="pull-requests-guidelines">Pull Requests Guidelines</h2>
+<ul>
+<li>If the existing tests do not already cover your changes, please add tests..</li>
+<li>Pull requests should be created on the <em>dev</em> branch.</li>
+<li>Please use <a href="https://golang.org/cmd/gofmt/">gofmt</a> for formatting the code before submitting the pull request.</li>
+</ul>
+<h1 id="using-jfrog-cli">Using JFrog CLI</h1>
+<p>JFrog CLI can be used for a variety of functions with Artifactory, Xray and Mission Control,
+and has a dedicated set of commands for each product.
+To learn how to use JFrog CLI, please visit the <a href="https://www.jfrog.com/confluence/display/CLI/Welcome+to+JFrog+CLI">JFrog CLI User Guide</a>.</p>
+<h1 id="jfrog-cli-plugins">JFrog CLI Plugins</h1>
+<p>JFrog CLI plugins support enhancing the functionality of JFrog CLI to meet the specific user and organization needs. The source code of a plugin is maintained as an open source Go project on GitHub. All public plugins are registered in JFrog CLI&#39;s Plugins Registry, which is hosted in the <a href="https://github.com/jfrog/jfrog-cli-plugins-reg">jfrog-cli-plugins-reg</a> GitHub repository. We encourage you, as developers, to create plugins and share them publically with the rest of the community. Read more about this in the <a href="guides/jfrog-cli-plugins-developer-guide.md">JFrog CLI Plugin Developer Guide</a>.</p>
+<h1 id="release-notes">Release Notes</h1>
+<p>The release notes are available <a href="RELEASE.md#release-notes">here</a>.</p>
